@@ -14,7 +14,7 @@ import {
 import { db } from "./firebase";
 import { async } from "@firebase/util";
 
-export default function Chat() {
+export default function Chat({ userName }) {
   const { groupId } = useParams();
   const [groupName, setGroupName] = useState();
   const [input, setInput] = useState("");
@@ -53,7 +53,7 @@ export default function Chat() {
           collection(db, "groups", groupId, "messages"),
           {
             message: input,
-            name: "rahul",
+            name: userName,
             timestamp: serverTimestamp(),
           }
         );
@@ -97,9 +97,8 @@ export default function Chat() {
       <div className="chatBody">
         {messages.map((message) => (
           <p
-            className={`chatMessage ${
-              message.name == "rahul" && "chatReceiver"
-            }`}
+            className={`chatMessage ${message.name == userName && "chatReceiver"
+              }`}
           >
             <span className="chatName">{message.name}</span>
             {message.message}
